@@ -64,9 +64,6 @@ jspm_packages/
 # Rider
 .idea/
 
-# Docker
-docker-compose.override.yml
-
 # Secrets
 *.pfx
 *.key

@@ -38,6 +38,43 @@ curl http://localhost:8080/api/health
 └── .dockerignore
 ```
 
+## Development Hot Reload with docker-compose.override.yml
+
+For a fast development workflow with automatic hot reload, use the `docker-compose.override.yml` file. This override configures the API container to use:
+
+- `Dockerfile.dev` (if present) with `dotnet watch run` for hot reload
+- Bind mounts your source code into the container (`.:/src`)
+- Enables file watcher for code changes
+
+### When to Use
+- **Local development:** Use hot reload when you want to see code changes reflected immediately without rebuilding the container.
+- **Not for production:** This setup is only for development. For production, use the default `docker-compose.yml` and `Dockerfile`.
+
+## How to Use (Development)
+
+1. Ensure you have `docker-compose.override.yml` and (optionally) `Dockerfile.dev` in your project root.
+2. Start the stack with:
+	```bash
+	docker compose up
+	```
+3. Edit your C# files locally. The API will reload automatically on changes.
+
+## How to Use (Production)
+
+To run in production mode (no hot reload, optimized build):
+
+1. Make sure you are using the default `docker-compose.yml` and `Dockerfile` only (no override file present).
+2. Build and start the stack with:
+	```bash
+	docker compose -f docker-compose.yml up --build
+	```
+	Or simply:
+	```bash
+	docker compose up --build
+	```
+	if there is no `docker-compose.override.yml` in the directory.
+3. The API will run in production mode, using the published build inside the container.
+
 ## TLS Fix Explanation
 
 ### The Problem
